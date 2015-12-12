@@ -1,5 +1,5 @@
 void mainMenu() {
-  Serial.println("main()");
+  Serial.println(F("main()"));
   int cursorPos = 0;
   display.setTextSize(1);
   while(true) {
@@ -12,14 +12,14 @@ void mainMenu() {
   } if(buttons[RIGHT] || buttons[SELECT]) {
     switch(cursorPos) {
       case(0):
-        bulbMode();
+        intervalometer();
         break;
       case(1): 
-        intervalometer();
+        bulbMode();
         break;
       }
     } 
-  String menuItems[] = {"Bulb Mode", "Intervalometer", "uptime: " + String(millis())};
+  String menuItems[] = {"Intervalometer", "Bulb Mode", "", "", "", ""};
     displayMenu("Choose mode:", menuItems, cursorPos);
   }
 }

@@ -2,8 +2,8 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_PCD8544.h>;
 
-#include <avr/sleep.h>
-#include <avr/power.h>
+//#include <avr/sleep.h>
+//#include <avr/power.h>
 
 
 //Globals:
@@ -36,17 +36,12 @@ byte IRledPin = 13;
 void setup() {
   voidSetup();
   showSplashScreen();
-  // showIntervalometer();
-
-
-
 }
 
 byte cursorPos = 0;
 bool buttonsFreeze = false;
 unsigned long buttonsUnFreeze = 0;
 void loop() {
-  // put your main code here, to run repeatedly:
   mainMenu();
 }
 

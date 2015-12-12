@@ -1,70 +1,91 @@
 //Globals because I don't know how to pass objects to methods in c++
   
-  byte getInputDigit[] = {3, 9, 3, 9, 2, 4};
+  byte getInputDigit[] = {0, 0, 0, 0, 0}; //0000.0 s
   byte getInputDigits;
-  unsigned long getInputMsec;
   
 
-unsigned long getMilliSeconds(byte bgetInputDigits) {
+unsigned long getSeconds(String menuTitle) {
   Serial.println("getInput::getMilliSeconds");
-
-  getInputDigit[4] = 9;
-  getInputMsec = 0;
-  getInputDigits = bgetInputDigits;
-
-  bool cancel = false;
+  
   bool exitApp = false;
   byte cursor = 0;
+
+  unsigned long seconds;
+  unsigned long totalMilliseconds = 0;
+  
   while(!exitApp) {
     readButtons();
     if(buttons[LEFT]) {
-      exitApp = true;
-      cancel = true;
+      if (cursor <= 0) {
+        cursor = 4;
+      } else {
+        cursor --;
+      }
     } if(buttons[UP]) {
-
+      if (getInputDigit[cursor] >= 9) {
+        getInputDigit[cursor] = 0;
+      } else {
+        getInputDigit[cursor] ++;
+      }
+      
     } if(buttons[DOWN]) {
-
-      
+      if (getInputDigit[cursor] >= 1) {
+        getInputDigit[cursor] --;
+      }
     } if(buttons[RIGHT]) {
-      
+      if (cursor >= 4) {
+        cursor = 0;
+      } else {
+        cursor ++;
+      }
     } if(buttons[SELECT]) {
       exitApp = true;
     }
 
+    //bytes to string to long convertion:
+    String secondsS = "";
+    for (byte i = 0; i<4; i++) {
+      secondsS += getInputDigit[i]; 
+    }
 
-    //UI:
+    seconds = secondsS.toInt();
+    totalMilliseconds = seconds * 1000 + getInputDigit[4] * 100;
+    
+    
+    //UI:s
+    display.clearDisplay();
     //menuBar:
     display.setCursor(0,0);
-    printlnInverted("Input:");
+    printlnInverted(menuTitle);
 
     //input:
     display.setCursor(0, 2*8);
-    display.println(String() + F("ms"));
-    //buttons:
+
+    for (int i=0; i<5; i++) {
+      if (cursor == i) {
+        printStrInverted(String(getInputDigit[i]));
+      } else {
+        display.print(String(getInputDigit[i]));
+      }
+      if (i == 3) {
+        display.print(F("."));
+      }
+      if (i > 3) {
+        display.println(F("sec"));
+      }
+    }
     
     display.display();
+
+//    for (int i=0; i<4; i++) {
+//      Serial.println("getInput::getInputDigit[" + String(i) +"] = " + String(getInputDigit[i]));
+//    }
+//    Serial.println("getInput::secondsS = " + secondsS);
+//    Serial.println("getInput::totalMilliseconds = " + String(totalMilliseconds));
+    Serial.println("getInput::cursor = " + String(cursor));
   }
-  display.clearDisplay();
   
   
-  if(!cancel) {
-    calcMs();
-    return getInputMsec;
-  }
-  return 0;
+  return totalMilliseconds;
 }
-
-void calcMs() {
-  getInputMsec = 0;
-  byte exp = getInputDigits-1;
-    for(byte i = 0; i<getInputDigits; i++) {
-      Serial.println("hai2");
-      Serial.println(String(getInputDigit[i] * pow(10, i)));
-      Serial.println(String(getInputDigit[i]));
-      getInputMsec += getInputDigit[i] * pow(10, exp);
-      exp--;
-    }
-//    getInputMsec++;
-}
-
 

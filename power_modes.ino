@@ -17,7 +17,5 @@ void powerMode(byte mode) {
       display.setContrast(10);
       break;
   }
-  
-  
 }
 

@@ -3,14 +3,14 @@ long nextPicture = 0; //millis() at which the next photo is to be taken
 
 void intervalometer() {
   Serial.println("intervalometer()");
+  bool exitApp = false;
   setInterval(0);
 
-  int prevButtonFreezeDelay = buttonFreezeDelay;
-  buttonFreezeDelay = 200;
-
   interval = getSeconds(F("Set interval:"));
+  if (interval == 0) {
+    exitApp = true;
+  }
   
-  bool exitApp = false;
   while(!exitApp) {
     readButtons();
     if(buttons[LEFT]) {

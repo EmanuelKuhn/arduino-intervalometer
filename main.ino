@@ -7,7 +7,7 @@ void mainMenu() {
   readButtons();
   if(buttons[UP] && cursorPos > 0) {
     cursorPos--;
-  } if(buttons[DOWN] && cursorPos < 4) {
+  } if(buttons[DOWN] && cursorPos < 1) {
     cursorPos++;
   } if(buttons[RIGHT] || buttons[SELECT]) {
     switch(cursorPos) {
@@ -19,7 +19,7 @@ void mainMenu() {
         break;
       }
     } 
-  String menuItems[] = {"Intervalometer", "Bulb Mode", "", "", "", ""};
+    String menuItems[] = {"Intervalometer", "Bulb Mode", "", "", "", ""};
     displayMenu("Choose mode:", menuItems, cursorPos);
   }
 }

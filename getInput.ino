@@ -1,12 +1,10 @@
-//Globals because I don't know how to pass objects to methods in c++
-  
-  byte getInputDigit[] = {0, 0, 0, 0, 0}; //0000.0 s
-  byte getInputDigits;
-  
+byte getInputDigit[] = {0, 0, 0, 0, 0}; //0000.0 s
 
 unsigned long getSeconds(String menuTitle) {
-  Serial.println("getInput::getMilliSeconds");
+  int prevButtonFreezeDelay = buttonFreezeDelay;
+  buttonFreezeDelay = 200;
   
+  Serial.println("getInput::getMilliSeconds");
   bool exitApp = false;
   byte cursor = 0;
 
@@ -22,15 +20,17 @@ unsigned long getSeconds(String menuTitle) {
         cursor --;
       }
     } if(buttons[UP]) {
-      if (getInputDigit[cursor] >= 9) {
+      if (getInputDigit[cursor] > 8) {
         getInputDigit[cursor] = 0;
       } else {
         getInputDigit[cursor] ++;
       }
       
     } if(buttons[DOWN]) {
-      if (getInputDigit[cursor] >= 1) {
+      if (getInputDigit[cursor] > 0) {
         getInputDigit[cursor] --;
+      } else {
+        getInputDigit[cursor] = 9;
       }
     } if(buttons[RIGHT]) {
       if (cursor >= 4) {
@@ -84,7 +84,6 @@ unsigned long getSeconds(String menuTitle) {
 //    Serial.println("getInput::totalMilliseconds = " + String(totalMilliseconds));
     Serial.println("getInput::cursor = " + String(cursor));
   }
-  
   
   return totalMilliseconds;
 }
